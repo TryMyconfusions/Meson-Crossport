@@ -1,8 +1,0 @@
-[host_machine]
-cpu_family = 'x86_64'
-cpu = 'x86_64'
-system = 'windows'
-[binaries]
-c = 'mingw32'
-ar = 'mingwar'
-windres = 'mingw32windres'
