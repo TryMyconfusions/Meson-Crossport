@@ -1,0 +1,9 @@
+{
+	"authors": [
+		"voided"
+	],
+	"copyright": "Copyright © 2026, voided",
+	"description": "a minimal cli tool that simiplifies making cross files for meson",
+	"license": "GPL-2.0-or-later",
+	"name": "crossport"
+}
