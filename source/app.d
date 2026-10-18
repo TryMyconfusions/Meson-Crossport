@@ -59,8 +59,9 @@ string[] cpu_family =
 [
 	"x86",
 	"x86_64",
-	"arm32",
-	"arm64",
+	"arm",
+	"aarch64",
+	"mips"
 ];
 
 
@@ -69,6 +70,8 @@ string[] supported_os =
 	"windows",
 	"linux",
 	"macos",
+	"android",
+	"ios",
 ];
 
 
@@ -246,9 +249,16 @@ void main(string[] args)
 	// adding the c compiler if the user told it to add
 	if (c_compiler != "") 
 	{ 
-		add_obj("c = '" ~ c_compiler ~ "'");
-	    printv("added C Compiler: " ~ c_compiler); 
-		passedflag();
+		if (!c_compiler.canFind("[")) 
+		{ 
+			add_obj("c = '" ~ c_compiler ~ "'");
+		} 
+		else 
+		{
+			add_obj("c = " ~ c_compiler);
+		} 
+			printv("added C Compiler: " ~ c_compiler); 
+			passedflag();
 	}
 
 
@@ -269,10 +279,17 @@ void main(string[] args)
 
 	if (cpp_compiler != "") 
 	{ 
-		add_obj("cpp = '" ~ cpp_compiler ~ "'"); 
-		printv("added C++ Compiler: " ~ cpp_compiler); 
-		passedflag();
-		}
+		if (!cpp_compiler.canFind("[")) 
+		{ 
+			add_obj("cpp = '" ~ cpp_compiler ~ "'");
+		} 
+		else 
+		{
+			add_obj("cpp = " ~ cpp_compiler);
+		} 
+			printv("added C++ Compiler: " ~ cpp_compiler); 
+			passedflag();
+	}
 
 
 	if (ar != "") 

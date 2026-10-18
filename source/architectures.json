@@ -1,0 +1,5 @@
+{
+    "architectures": [
+        "x86", "x86_64", "arm", "alpha", "arc", "avr", "c2000" 
+    ]
+}
