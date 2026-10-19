@@ -1,0 +1,11 @@
+{
+    "architectures": [
+        "x86", "x86_64", "arm", "alpha", "arc", "avr", "c2000","c6000","csky",
+        "dspic","e2k","f8","ft32","hc08","ia64","loongarch64","m68k","mcs51",
+        "microblaze","mips","mips64","mos6502","msp430","padauk","parisc",
+        "pic24","pic32","ppc","ppc64","rabbit","riscv32","riscv64","rl78",
+        "rx","s390"," s390x","sh4","sm83","sparc","sparc64","stm8","sw_64",
+        "tlcs90","wasm32","wasm64","z80","tricore" 
+    ]
+    
+}
