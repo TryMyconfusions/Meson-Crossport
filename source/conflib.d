@@ -1,6 +1,12 @@
 module conflib;
 import std.json;
 //the arguments for crossport
+
+//these are the variables for crossport i thought it would be nice to place it somewhere so crosslib and app.d can access it.
+
+
+
+
 bool verbose;
 string cpufamily;
 string target_os;
@@ -27,7 +33,7 @@ JSONValue[] cpu_family;
 
 JSONValue[] supported_os;
 
-string[] endians;
+JSONValue[] endians;
 
 string sys_root; // system root
 int soi; //sizeof_int

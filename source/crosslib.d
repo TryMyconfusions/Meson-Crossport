@@ -6,6 +6,11 @@ import conflib;
 import std.conv;
 import std.json;
 
+//helper functions are placed here for the sake of reducing lines in the main file, and making it easier to maintain!
+
+
+
+
 void printv(string message,bool verbose)
 {	
 	if (verbose) {  // prints if only the verbose boolean is verbose incase if the user wants to debug the program
@@ -71,3 +76,14 @@ string read_file(string filename)
 }
 
 
+string bool_to_str(bool boolthing) 
+{
+	if (boolthing) // a simple boolean to string
+	{
+		return "true";
+	} 
+	else 
+	{
+		return "false";
+	}
+}
