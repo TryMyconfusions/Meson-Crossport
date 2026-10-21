@@ -32,7 +32,7 @@ void generate_crossfile(string[] sts, string target_os)
 
 	}
 	if (target_os.length == 0) {writeln("No targetOS selected!"); return;}
-	std.file.write("crossfile" ~ target_os[0] ~ ".txt",final_str); // and then finally compile the finalstring 
+	std.file.write("crossfile-" ~ target_os ~ ".txt",final_str); // and then finally compile the finalstring 
 	writeln("sucessfully compiled Crossfile!");
 }
 
@@ -85,5 +85,15 @@ string bool_to_str(bool boolthing)
 	else 
 	{
 		return "false";
+	}
+}
+
+void passedflag() {
+
+	if (conflib.has_passedflags==false) 
+
+	{ //checks if you passed any flags and if you did it will set to true this is mainly used to stop people from adding incorrect flags, and instead
+	//give a clean error.
+		conflib.has_passedflags = true;
 	}
 }

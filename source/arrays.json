@@ -4,14 +4,14 @@
         "dspic","e2k","f8","ft32","hc08","ia64","loongarch64","m68k","mcs51",
         "microblaze","mips","mips64","mos6502","msp430","padauk","parisc",
         "pic24","pic32","ppc","ppc64","rabbit","riscv32","riscv64","rl78",
-        "rx","s390"," s390x","sh4","sm83","sparc","sparc64","stm8","sw_64",
+        "rx","s390","s390x","sh4","sm83","sparc","sparc64","stm8","sw_64",
         "tlcs90","wasm32","wasm64","z80","tricore" 
     ],
 
 
     "supportedOS": [
         "android","cygwin","darwin","dragonfly","emscripten","freebsd","gnu","haiku","ironclad",
-        "linux","netbsd","openbsd","windows","sunos"," os/2","fuchsia","aix","qnx","ios","visionos",
+        "linux","netbsd","openbsd","windows","sunos","os/2","fuchsia","aix","qnx","ios","visionos",
         "watchos","openharmony","harmonyos"
     ],
 
