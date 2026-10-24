@@ -5,5 +5,7 @@
 	"copyright": "Copyright © 2026, TryMyconfusions",
 	"description": "a minimal cli tool that simiplifies making cross files for meson",
 	"license": "GPL-2.0-or-later",
-	"name": "crossport"
+	"name": "crossport",
+	"sourcePaths": ["source"],
+	"stringImportPaths": ["source"]
 }

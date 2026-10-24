@@ -51,7 +51,7 @@ void main(string[] args)
 
 	try 
 	{
-	JSONValue arrays = std.json.parseJSON(crosslib.read_file("source/arrays.json"));
+	JSONValue arrays = std.json.parseJSON(jsonstuff);
 
 	conflib.cpu_family = arrays["architectures"].array();
 	conflib.supported_os = arrays["supportedOS"].array();
@@ -62,7 +62,7 @@ void main(string[] args)
 	catch (Exception e)  // give a clean error of why it failed!
 	{
 		writeln(e.msg);
-		writeln(read_file("source/arrays.json")); 
+		writeln(jsonstuff); 
 		return;
 	}
 	try {

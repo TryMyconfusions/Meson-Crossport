@@ -12,10 +12,7 @@ rm -rf build
 --da "[
 '-gcc=clang'
 ]" \
---dla "[
-'-L=LIBPATH:/home/voided/.xwin/sdk/lib/um/x86_64',
-'-L=LIBPATH:/home/voided/.xwin/sdk/lib/ucrt/x86_64',
-'-L=LIBPATH:/home/voided/.xwin/crt/lib'
+--dla "['-L=LIBPATH:/home/voided/.xwin/sdk/lib/um/x86_64','-L=LIBPATH:/home/voided/.xwin/sdk/lib/ucrt/x86_64','-L=LIBPATH:/home/voided/.xwin/crt/lib'
 ]"
 
 meson setup build

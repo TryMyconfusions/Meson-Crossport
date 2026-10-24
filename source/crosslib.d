@@ -65,14 +65,6 @@ string find_e(string e, JSONValue[] arr)
 }
 
 
-string read_file(string filename) 
-{
-	printv("read file: " ~ filename, conflib.verbose);
-
-	
-	return std.file.readText(filename);
-
-}
 
 
 string bool_to_str(bool boolthing) 

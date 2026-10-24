@@ -18,8 +18,5 @@ d = 'ldc2'
 d_args = [
 '-gcc=clang'
 ]
-d_link_args = [
-'-L=LIBPATH:/home/voided/.xwin/sdk/lib/um/x86_64',
-'-L=LIBPATH:/home/voided/.xwin/sdk/lib/ucrt/x86_64',
-'-L=LIBPATH:/home/voided/.xwin/crt/lib'
+d_link_args = ['-L=LIBPATH:/home/voided/.xwin/sdk/lib/um/x86_64','-L=LIBPATH:/home/voided/.xwin/sdk/lib/ucrt/x86_64','-L=LIBPATH:/home/voided/.xwin/crt/lib'
 ]

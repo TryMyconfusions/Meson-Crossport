@@ -12,6 +12,8 @@ string cpufamily;
 string target_os;
 string endian;
 
+enum string jsonstuff = import("arrays.json");
+
 
 
 
