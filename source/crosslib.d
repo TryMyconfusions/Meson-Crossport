@@ -24,8 +24,8 @@ void generate_crossfile(string[] sts, string target_os)
 	printv("Generating crossfile...",conflib.verbose); 
 
 	string final_str;
-	for (int i; i < sts.length; i++) {
-		string cur_s = sts[i] ~ "\n"; //gets the current stuff and adds a newline so it wont smash into one
+	foreach (cur_s; sts) {
+		cur_s =  cur_s ~ "\n"; //gets the current stuff and adds a newline so it wont smash into one
 		final_str = final_str ~ cur_s; // adds the current stuff to the finalstring 
 
 
@@ -49,13 +49,12 @@ string tostring(int num) {
 string find_e(string e, JSONValue[] arr) 
 { // finds a element in a array
 	if (arr.length > 0) {
-	for (int i; i < arr.length; i++) 
+	foreach (cur_i; arr) // so this basically just loops through an array and if the element matches the object it returns it
 	{
-		JSONValue cur_i = arr[i];
 
 		if (cur_i.str==e) 
 		{
-			printv("Found Element!",conflib.verbose);
+			printv("Found Element: " ~ e ,conflib.verbose);
 			return cur_i.str;
 
 			}
@@ -88,7 +87,18 @@ string bool_to_str(bool boolthing)
 	}
 }
 
-void passedflag() {
+
+
+void add_obj(string thing) 
+{
+	conflib.stuffforfile ~= thing; // add a object to the array stufforfile that would later be compiled for the crossfile
+}
+
+
+
+
+void passedflag() 
+{
 
 	if (conflib.has_passedflags==false) 
 
@@ -96,4 +106,72 @@ void passedflag() {
 	//give a clean error.
 		conflib.has_passedflags = true;
 	}
+}
+
+
+void add_section(string sect, bool hasadded) 
+{
+	// this function adds a new section for the crossfile.
+	if (!hasadded) 
+	{
+
+		switch (sect) 
+		{
+			case "[host_machine]":
+				add_obj("");
+
+				add_obj(sect);
+
+				add_obj("");
+				printv("added section: " ~ sect, conflib.verbose);
+				conflib.required_sections.hostmachine = true;
+
+				break;
+
+			case "[binaries]":
+				add_obj("");
+
+				add_obj(sect);
+
+				add_obj("");
+				printv("added section: " ~ sect, conflib.verbose);
+
+				conflib.required_sections.binaries = true;
+
+				break;
+			
+			case "[properties]":
+				add_obj("");
+
+				add_obj(sect);
+
+				add_obj("");
+				printv("added section: " ~ sect, conflib.verbose);
+
+
+				conflib.required_sections.properties = true;
+
+				break;
+
+			case "[built-in options]":
+
+				add_obj("");
+
+				add_obj(sect);
+				
+				add_obj("");
+				printv("added section: " ~ sect, conflib.verbose);
+
+				conflib.required_sections.builtin = true;
+
+				break;
+			
+
+
+		    default:
+
+				writeln("Section is not supported");
+		}
+	}
+
 }

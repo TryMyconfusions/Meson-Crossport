@@ -36,13 +36,6 @@ import conflib;
 
 
 
-string[] stuffforfile;
-
-
-void add_obj(string thing) 
-{
-	stuffforfile ~= thing; // add a object to the array stufforfile that would later be compiled for the crossfile
-}
 
 
 
@@ -104,6 +97,14 @@ void main(string[] args)
 		"pkgconf", "[advanced] pkg_config_libdir path", &conflib.pkg_conf,
 		"needwrapper", "need exe wrapper", &conflib.needs_exe_wrap,
 
+		"da", "D arguments [Array]", &conflib.da,
+		"ca", "C arguments [Array]", &conflib.ca,
+		"cppa", "C++ arguments [Array]", &conflib.cppa,
+
+		"dla", "D Link arguments", &conflib.dla,
+		"cla", "C Link arguments", &conflib.cla,
+		"cppla", "C++ Link arguments", &conflib.cppla
+
 	);
 
 	printv("created getopt",conflib.verbose);
@@ -119,16 +120,20 @@ void main(string[] args)
 
 	add_obj(""); // add a new line because generate crossfile auto adds a newline
 
-	add_obj("[host_machine]");
+	//add_obj("[host_machine]");
 
 
-	add_obj("");
 
 
 	printv("added stuffforfile [host_machine]",conflib.verbose);
 
+	// Host Machine
+
 	if (find_e(cpufamily,cpu_family) != "") 
 	{ 
+		add_section("[host_machine]", conflib.required_sections.hostmachine);
+
+
 		add_obj("cpu_family = '" ~ cpufamily ~ "'");
 		add_obj("cpu = '" ~ cpufamily ~ "'");
 
@@ -137,7 +142,9 @@ void main(string[] args)
 		writeln("sucessfully added architecture!");
 		printv("added architecture: " ~ cpufamily, conflib.verbose);
 	} 
+
 	else 
+
 	{
 		writeln("architecture not supported! run crossport with -h flag for help!");
 		return; //return to prevent code from running underneath!
@@ -146,9 +153,30 @@ void main(string[] args)
 
 	if (find_e(target_os,supported_os) != "") 
 	{ 
+		add_section("[host_machine]", conflib.required_sections.hostmachine);
+
+	    // if the OS is os/2 there are technical problems with it like spitting out OS\/2 so i
+		// turned the name into os2 to prevent it.
+
+		if (target_os != "os2")
+		{
+		
+
 		add_obj("system = '" ~ target_os ~ "'"); 
 		printv("sucessfully added OS: " ~ target_os,conflib.verbose);
 		passedflag();
+
+
+		} 
+
+		else 
+
+		{
+			add_obj("system = 'os/2'");
+			printv("sucessfully added OS: " ~ target_os,conflib.verbose);
+
+			passedflag();
+		}
 	}
 	else 
 	{
@@ -157,9 +185,12 @@ void main(string[] args)
 	}
 
 
-	if (find_e(endian,endians) != "") 
+	if (find_e(conflib.endian, conflib.endians) != "") 
 	{ 
-		add_obj("endian = '" ~ endian ~ "'"); 
+
+		add_section("[host_machine]", conflib.required_sections.hostmachine);
+
+		add_obj("endian = '" ~ conflib.endian ~ "'"); 
 		printv("added endian: " ~ endian,conflib.verbose); 
 		passedflag();
 	} else 
@@ -168,16 +199,16 @@ void main(string[] args)
 		return;
 	}
 
-	add_obj(""); //add newline
-
-	add_obj("[binaries]");
-
-	add_obj("");
 
 
 	// adding the c compiler if the user told it to add
-	if (c_compiler != "") 
+
+	// Binaries
+
+	if (conflib.c_compiler != "") 
 	{ 
+		add_section("[binaries]", conflib.required_sections.binaries);
+
 		if (!c_compiler.canFind("[")) 
 		{ 
 			add_obj("c = '" ~ c_compiler ~ "'");
@@ -193,17 +224,19 @@ void main(string[] args)
 
 	// find the [ to identify if its a array if it does have then dont quote it if it doesnt have quote it!
 
-	if (d_compiler != "") //d binaries
+	if (conflib.d_compiler != "") //d binaries
 	{ 
+		add_section("[binaries]", conflib.required_sections.binaries);
+
 		if (!d_compiler.canFind("[")) 
 		{ 
-			add_obj("d = '" ~ d_compiler ~ "'");
+			add_obj("d = '" ~ conflib.d_compiler ~ "'");
 		} 
 		else 
 		{
-			add_obj("d = " ~ d_compiler);
+			add_obj("d = " ~ conflib.d_compiler);
 		} 
-			printv("added D Compiler: " ~ d_compiler,conflib.verbose); 
+			printv("added D Compiler: " ~ conflib.d_compiler , conflib.verbose); 
 			passedflag();
 
 		} 
@@ -211,6 +244,8 @@ void main(string[] args)
 
 	if (cpp_compiler != "") //cpp binaries
 	{ 
+		add_section("[binaries]", conflib.required_sections.binaries);
+
 		if (!cpp_compiler.canFind("[")) 
 		{ 
 			add_obj("cpp = '" ~ cpp_compiler ~ "'");
@@ -226,6 +261,8 @@ void main(string[] args)
 
 	if (ar != "") //ar binaries
 	{ 
+		add_section("[binaries]", conflib.required_sections.binaries);
+
 		add_obj("ar = '" ~ ar ~ "'"); 
 		printv("added ar: " ~ ar,conflib.verbose); 
 		passedflag();
@@ -234,6 +271,8 @@ void main(string[] args)
 
 	if (windres != "") //windres binaries
 	{ 
+		add_section("[binaries]", conflib.required_sections.binaries);
+
 		add_obj("windres = '" ~ windres ~ "'"); 
 		printv("added windres: " ~ windres,conflib.verbose); 
 		passedflag(); 
@@ -242,68 +281,199 @@ void main(string[] args)
 
 	if (strip != "") //strip binaries
 	{ 
+		add_section("[binaries]", conflib.required_sections.binaries);
+
 		add_obj("strip = '" ~ strip ~ "'");
 		 printv("added strip: " ~ strip,conflib.verbose); 
 		 passedflag(); 
 	}
 
-	add_obj(""); //add newline
-	add_obj("[properties]");
-	add_obj("");
 
 
-	if (soi != 0) 
+	if (conflib.soi != 0) 
 	{ 
-		add_obj("sizeof_int = " ~ tostring(soi)); passedflag(); 
+		add_section("[properties]", conflib.required_sections.properties);
+
+		add_obj("sizeof_int = " ~ tostring(soi)); passedflag();
+		printv("added sizeof_int: " ~ tostring(soi), conflib.verbose);
+
+		passedflag(); 
 	}
 
+	// Properties
 
-	if (soc != 0) 
+	if (conflib.soc != 0) 
 	{ 
+		add_section("[properties]", conflib.required_sections.properties);
+
+
 		add_obj("sizeof_wchar_t = " ~ tostring(soc)); 
+		printv("added wchar_t: " ~ tostring(soc), conflib.verbose);
+
 		passedflag();
 	}
 
 
-	if (sov != 0) 
+	if (conflib.sov != 0) 
 	{ 
+		add_section("[properties]", conflib.required_sections.properties);
 
 		add_obj("sizeof_void* = " ~ tostring(sov)); 
+		printv("added sizeof_void*: " ~ tostring(sov), conflib.verbose);
+
+
 		passedflag();
 
 	}
 
 
-	if (has_printf) 
+	if (conflib.has_printf) 
 	{ 
-		add_obj("has_function_printf = " ~ bool_to_str(has_printf)); 
+		add_section("[properties]", conflib.required_sections.properties);
+
+		add_obj("has_function_printf = "~ bool_to_str(has_printf)); 
+		printv("added has_function_printf*: " ~ bool_to_str(has_printf), conflib.verbose);
+
+
 		passedflag();
 
 	}
 
 
-	if (needs_exe_wrap) 
+	if (conflib.needs_exe_wrap) 
 	{
+	add_section("[properties]", conflib.required_sections.properties);
+
 
 	add_obj("needs_exe_wrapper = " ~ bool_to_str(needs_exe_wrap)); 
-	
+	printv("need EXE Wrapper: " ~ conflib.needs_exe_wrap, conflib.verbose);
+
 	passedflag();
 
 	}
 
 
-	if (pkg_conf != "") 
+	if (conflib.pkg_conf != "") 
 	{ 
+	add_section("[properties]", conflib.required_sections.properties);
+
 	add_obj("pkg_config_libdir = '" ~ pkg_conf ~ "'");
+	crosslib.printv("added pkg_confing_libdir: " ~ conflib.pkg_conf, conflib.verbose);
+
     passedflag();
 	}
 
 
-	if (sys_root != "") 
+	if (conflib.sys_root != "") 
 	{ 
-	add_obj("sys_root = '" ~ sys_root ~ "'"); 
+	add_section("[properties]", conflib.required_sections.properties);
+
+	add_obj("sys_root = '" ~ conflib.sys_root ~ "'"); 
+
+	crosslib.printv("added sys_root: " ~ conflib.sys_root, conflib.verbose);
 	passedflag();
 	}
+	
+	// Language arguments
+
+
+
+	if (conflib.da != "" && conflib.da.canFind("[")) 
+	{
+		add_section("[built-in options]", conflib.required_sections.builtin);
+
+		add_obj("d_args = " ~ da);
+		printv("added d_args: "~ da, conflib.verbose);
+
+		passedflag();
+	} 
+	else if (conflib.da != "" && !conflib.da.canFind("[")) 
+	{
+		writeln(conflib.da ~ " isnt a array!");
+		return;
+	}
+
+
+	if (conflib.ca != "" && conflib.da.canFind("[")) 
+	{
+		add_section("[built-in options]", conflib.required_sections.builtin);
+
+		add_obj("c_args = " ~ conflib.ca);
+		printv("added c_args: "~ ca, conflib.verbose);
+
+		passedflag();
+	} 
+	else if (conflib.ca != "" && !conflib.ca.canFind("[")) 
+	{
+		writeln(conflib.ca ~ " isnt a array!");
+		return;
+	}
+
+
+	if (conflib.cppa != "" && conflib.cppa.canFind("[")) 
+	{
+		add_section("[built-in options]", conflib.required_sections.builtin);
+
+		add_obj("cpp_args = " ~ cppa);
+		printv("added cpp_args: "~ cppa, conflib.verbose);
+
+		passedflag();
+	} 
+	else if (conflib.cppa != "" && !conflib.cppa.canFind("[")) 
+	{
+		writeln(conflib.cppa ~ " isnt a array!");
+		return;
+	}
+
+	// Linker arguments
+
+	if (conflib.dla != "" && conflib.dla.canFind("[")) 
+	{
+		add_section("[built-in options]", conflib.required_sections.builtin);
+
+		add_obj("d_link_args = " ~ dla);
+		printv("added d_link_args: "~ dla, conflib.verbose);
+
+		passedflag();
+	} 
+	else if (conflib.dla != "" && !conflib.dla.canFind("[")) 
+	{
+		writeln(conflib.dla ~ " isnt a array!");
+		return;
+	}
+
+
+	if (conflib.cla != "" && conflib.cla.canFind("[")) 
+	{
+		add_section("[built-in options]", conflib.required_sections.builtin);
+
+		add_obj("c_link_args = " ~ conflib.cla);
+		printv("added c_link_args: "~ cla, conflib.verbose);
+
+		passedflag();
+	} 
+	else if (conflib.cla != "" && !conflib.cla.canFind("[")) 
+	{
+		writeln(conflib.cla ~ " isnt a array!");
+		return;
+	}
+
+
+	if (conflib.cppla != "" && conflib.cppla.canFind("[")) 
+	{
+		add_section("[built-in options]", conflib.required_sections.builtin);
+
+		add_obj("cpp_link_args = " ~ cppla);
+		printv("added cpp_link_args: "~ cppla, conflib.verbose);
+
+		passedflag();
+	} 
+	else if (conflib.cppla != "" && !conflib.cppa.canFind("[")) 
+	{
+		writeln(conflib.cppla ~ " isnt a array!");
+		return;
+	}
+
 
 
 
@@ -313,11 +483,17 @@ void main(string[] args)
 		generate_crossfile(stuffforfile,target_os);
 		return;
 	} 
+
 	else 
+
 	{
 		writeln("No flags please type ./crossfile -h for help info!");
 		return;
 	}
+
+
+
+
 
 
 

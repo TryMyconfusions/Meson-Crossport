@@ -5,13 +5,13 @@
         "microblaze","mips","mips64","mos6502","msp430","padauk","parisc",
         "pic24","pic32","ppc","ppc64","rabbit","riscv32","riscv64","rl78",
         "rx","s390","s390x","sh4","sm83","sparc","sparc64","stm8","sw_64",
-        "tlcs90","wasm32","wasm64","z80","tricore" 
+        "tlcs90","wasm32","wasm64","z80","tricore","aarch64" 
     ],
 
 
     "supportedOS": [
         "android","cygwin","darwin","dragonfly","emscripten","freebsd","gnu","haiku","ironclad",
-        "linux","netbsd","openbsd","windows","sunos","os/2","fuchsia","aix","qnx","ios","visionos",
+        "linux","netbsd","openbsd","windows","sunos","os2","fuchsia","aix","qnx","ios","visionos",
         "watchos","openharmony","harmonyos"
     ],
 

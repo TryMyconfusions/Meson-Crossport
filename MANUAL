@@ -1,0 +1,194 @@
+this is a manual on how to use crossport!
+
+SupportedOS and architectures are listed in here!
+
+
+
+to get help commands run crossport with the help command like 
+"./crossport -h"
+
+because crossport is cli (Command line interface) there isnt a ui 
+
+for debugging purposes run crossport with the "-v" flag which stands for verbose
+it will print what the program is doing making debugging easier
+
+How to fix errors.
+
+Unrecognized command error:
+
+make sure your command is properly setup like
+"./crossport -v -a x86 -p windows -c gcc -s strip -e little"
+
+not something like
+
+"./crossport -a x854 -p someos -c gec -s strep"
+
+
+
+and make sure your command should also not be something like this
+
+"./crossport -a x86 -p windows -c gcc -s 
+
+strip
+"
+
+this is known to cause the unrecognized command error.
+
+
+
+endian must be either big or little error:
+
+you have to input the correct endian 
+it should be either
+
+big or little
+
+a endian is basically the direction that the cpu reads:
+
+big - reads from left to right
+little - reads from right to left
+
+a example of a proper command is
+
+"./crossport -v -a x86 -p windows -c gcc -e little"  <- it should have the -e flag otherwise it cannot generate the crossfile.
+
+
+
+
+
+compiler not appearing in crossfile bug! 
+
+this is not a bug, its more like a feature it automatically rejects empty compilers like if your compiler area is empty it wont appear at all
+because i didnt wanna make something this complex.
+
+so a proper way to make it is like
+
+"./crossport -v -c gcc"
+                     ^
+                     it should have something like this.
+
+for C++ its also the same approach just with the -cpp flag
+same with d but with the -d flag
+
+No value for argument found! error:
+
+it meant you typed a flag expecting a value but you didnt give it any!
+
+example:
+
+"./crossport -a"
+              ^
+              this was expecting a value like
+"./crossport -a x86"
+
+OS Not supported! error:
+
+OS not supported error is caused by things like
+
+"./crossport -p randomos"
+                  ^
+                  it was expecting a supported os by meson build system.
+
+so it should be something like
+
+"./crossport -p windows"
+
+
+
+
+
+and crossport will be happy with it.
+
+NOTE: Sometimes it may not appear so if its more than one letter like sysroot, make sure to add double dashes otherwise it wouldnt add it.
+
+NOTE: To make a array for crossport make sure to wrap it in quotes so it actually works.
+
+
+[thing] Isnt array! error:
+
+this is caused  because it isnt a array
+so
+
+"./crossport --cla stringthing"
+                    ^
+                    this was really expecting a array so
+
+./crossport --cla "['stringthing']"
+                        ^ 
+                        be sure to quote it.
+
+The Supported architectures are:
+
+"x86"
+"x86_64"
+"arm"
+"alpha"
+"arc"
+"avr"
+"c2000"
+"c6000"
+"csky"
+"dspic"
+"e2k"
+"f8"
+"ft32"
+"hc08"
+"ia64"
+"loongarch64"
+"m68k"
+"mcs51"
+"microblaze"
+"mips"
+"mips64"
+"mos6502"
+"msp430"
+"padauk"
+"parisc"
+"pic24"
+"pic32"
+"ppc"
+"ppc64"
+"rabbit"
+"riscv32"
+"riscv64"
+"rl78"
+"rx"
+"s390"
+"s390x"
+"sh4"
+"sm83"
+"sparc"
+"sparc64"
+"stm8"
+"sw_64"
+"tlcs90"
+"wasm32"
+"wasm64"
+"z80"
+"tricore"
+
+and the supported OS are:
+
+"android"
+"cygwin"
+"darwin"
+"dragonfly"
+"emscripten"
+"freebsd"
+"gnu"
+"haiku"
+"ironclad"
+"linux"
+"netbsd"
+"openbsd"
+"windows"
+"sunos"
+"os2" (Note): OS/2 is now os2 so it wouldnt error it because for some reason json just glitches at slashes maybe some website feature but yeah to prevent it now it uses os2
+"fuchsia"
+"aix"
+"qnx"
+"ios"
+"visionos"
+"watchos"
+"openharmony"
+"harmonyos"

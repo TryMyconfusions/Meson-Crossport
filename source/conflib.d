@@ -23,6 +23,16 @@ string ar;
 string strip;
 string exe_wrapper;
 string windres;
+
+string da; //D arguments
+string ca; //C arguments
+string cppa; //C++ arguments
+
+string dla;
+string cla;
+string cppla;
+
+
 bool needs_exe_wrap = false;
 
 bool has_passedflags = false;
@@ -48,3 +58,13 @@ bool has_printf = false;
 
 string pkg_conf;
 
+struct rs {
+    bool binaries;
+    bool hostmachine;
+    bool properties;
+    bool builtin;
+}
+rs required_sections; // the required sections for crossfiles
+
+
+string[] stuffforfile;
