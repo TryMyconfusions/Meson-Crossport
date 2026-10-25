@@ -25,14 +25,16 @@ string ar;
 string strip;
 string exe_wrapper;
 string windres;
+string fixpath;
 
-string da; //D arguments
-string ca; //C arguments
-string cppa; //C++ arguments
 
-string dla;
-string cla;
-string cppla;
+string[] da; //D arguments
+string[] ca; //C arguments
+string[] cppa; //C++ arguments
+
+string[] dla;
+string[] cla;
+string[] cppla;
 
 
 bool needs_exe_wrap = false;
@@ -70,3 +72,4 @@ rs required_sections; // the required sections for crossfiles
 
 
 string[] stuffforfile;
+

@@ -2,6 +2,17 @@ this is a manual on how to use crossport!
 
 SupportedOS and architectures are listed in here!
 
+Note: you should call --ca or --cla or your language thing and
+call it multiple times like.
+
+"./crossport -a x86 -p windows -e little -c clang --cpp clang++ --ca 'more random path' --ca 'more random' "
+
+its so it can convert it to a array.
+
+Suggestion: i recommend you use crossport in a Bash file that way you dont have to rewrite your commands.
+
+
+Before this used to be something where you just made it manually like [] but now it uses this better system
 
 
 to get help commands run crossport with the help command like 
@@ -53,7 +64,17 @@ a example of a proper command is
 "./crossport -v -a x86 -p windows -c gcc -e little"  <- it should have the -e flag otherwise it cannot generate the crossfile.
 
 
+couldnt write file or path is invalid! Error:
 
+make sure your fixpath directly leads to build.ninja an example of a fixpath is
+
+"build/build.ninja"
+
+it shouldnt be
+
+"build"
+
+Note: FIXPATH runs by itself so any more flags like architectures are completely ignored!
 
 
 compiler not appearing in crossfile bug! 
@@ -100,22 +121,6 @@ so it should be something like
 and crossport will be happy with it.
 
 NOTE: Sometimes it may not appear so if its more than one letter like sysroot, make sure to add double dashes otherwise it wouldnt add it.
-
-NOTE: To make a array for crossport make sure to wrap it in quotes so it actually works.
-
-
-[thing] Isnt array! error:
-
-this is caused  because it isnt a array
-so
-
-"./crossport --cla stringthing"
-                    ^
-                    this was really expecting a array so
-
-./crossport --cla "['stringthing']"
-                        ^ 
-                        be sure to quote it.
 
 The Supported architectures are:
 

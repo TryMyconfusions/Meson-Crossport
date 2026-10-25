@@ -5,6 +5,7 @@ import app;
 import conflib;
 import std.conv;
 import std.json;
+import std.string;
 
 //helper functions are placed here for the sake of reducing lines in the main file, and making it easier to maintain!
 
@@ -79,12 +80,10 @@ string bool_to_str(bool boolthing)
 	}
 }
 
-
-
-void add_obj(string thing) 
-{
-	conflib.stuffforfile ~= thing; // add a object to the array stufforfile that would later be compiled for the crossfile
+string fix_build_ninja(string build_contents) {
+	return build_contents.replace("-L=-L=","-L=");
 }
+
 
 
 
@@ -166,4 +165,25 @@ void add_section(string sect, bool hasadded)
 		}
 	}
 
+}
+
+string arrtostr(string[] arr) 
+{
+	string finalstr;
+
+	finalstr ~= "[";
+	
+	foreach (string cur_str; arr) 
+	{
+		finalstr ~= "'" ~ cur_str ~ "'";
+		finalstr ~= ", ";
+	}
+	finalstr ~= "]";
+
+	return finalstr;
+}
+
+void add_obj(string thing) 
+{
+	conflib.stuffforfile ~= thing; // add a object to the array stufforfile that would later be compiled for the crossfile
 }
