@@ -12,7 +12,7 @@ import std.string;
 
 
 
-void printv(string message,bool verbose)
+void printv(string message)
 {	
 	if (verbose) {  // prints if only the verbose boolean is verbose incase if the user wants to debug the program
 		writeln(message);
@@ -22,7 +22,7 @@ void printv(string message,bool verbose)
 
 void generate_crossfile(string[] sts, string target_os) 
 {
-	printv("Generating crossfile...",conflib.verbose); 
+	printv("Generating crossfile..."); 
 
 	string final_str;
 	foreach (cur_s; sts) {
@@ -41,7 +41,7 @@ void generate_crossfile(string[] sts, string target_os)
 string tostring(int num) {
 	string converted = to!string(num);
 
-	printv("converted int to string: " ~  converted,conflib.verbose);
+	printv("converted int to string: " ~  converted);
 
     return converted;
 }
@@ -55,13 +55,13 @@ string find_e(string e, JSONValue[] arr)
 
 		if (cur_i.str==e) 
 		{
-			printv("Found Element: " ~ e ,conflib.verbose);
+			printv("Found Element: " ~ e);
 			return cur_i.str;
 
 			}
 		}
 	}
-	printv("Failed to find element: " ~ e,conflib.verbose);
+	printv("Failed to find element: " ~ e);
 	return "";
 }
 
@@ -81,7 +81,7 @@ string bool_to_str(bool boolthing)
 }
 
 string fix_build_ninja(string build_contents) {
-	return build_contents.replace("-L=-L=","-L=");
+	return build_contents.replace("-L=-L=","-L="); // this replaces the contents via string.split in std or phobos
 }
 
 
@@ -114,7 +114,7 @@ void add_section(string sect, bool hasadded)
 				add_obj(sect);
 
 				add_obj("");
-				printv("added section: " ~ sect, conflib.verbose);
+				printv("added section: " ~ sect);
 				conflib.required_sections.hostmachine = true;
 
 				break;
@@ -125,7 +125,7 @@ void add_section(string sect, bool hasadded)
 				add_obj(sect);
 
 				add_obj("");
-				printv("added section: " ~ sect, conflib.verbose);
+				printv("added section: " ~ sect);
 
 				conflib.required_sections.binaries = true;
 
@@ -137,7 +137,7 @@ void add_section(string sect, bool hasadded)
 				add_obj(sect);
 
 				add_obj("");
-				printv("added section: " ~ sect, conflib.verbose);
+				printv("added section: " ~ sect);
 
 
 				conflib.required_sections.properties = true;
@@ -151,7 +151,7 @@ void add_section(string sect, bool hasadded)
 				add_obj(sect);
 				
 				add_obj("");
-				printv("added section: " ~ sect, conflib.verbose);
+				printv("added section: " ~ sect);
 
 				conflib.required_sections.builtin = true;
 
@@ -167,7 +167,8 @@ void add_section(string sect, bool hasadded)
 
 }
 
-string arrtostr(string[] arr) 
+
+string arrtostr(string[] arr) //array to str converts a array to a string by also removing the double quotes which make meson build system go crazy.
 {
 	string finalstr;
 
@@ -175,10 +176,10 @@ string arrtostr(string[] arr)
 	
 	foreach (string cur_str; arr) 
 	{
-		finalstr ~= "'" ~ cur_str ~ "'";
+		finalstr ~= "\n '" ~ cur_str ~ "'";
 		finalstr ~= ", ";
 	}
-	finalstr ~= "]";
+	finalstr ~= "\n ]";
 
 	return finalstr;
 }

@@ -62,6 +62,11 @@ bool has_printf = false;
 
 string pkg_conf;
 
+string[] cstdlib;
+string[] dstdlib;
+string[] cppstdlib;
+
+
 struct rs {
     bool binaries;
     bool hostmachine;

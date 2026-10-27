@@ -9,6 +9,8 @@ call it multiple times like.
 
 its so it can convert it to a array.
 
+Except for -d -c and --cpp flag because they support both string and array
+
 Suggestion: i recommend you use crossport in a Bash file that way you dont have to rewrite your commands.
 
 

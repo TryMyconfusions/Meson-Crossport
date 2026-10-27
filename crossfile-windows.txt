@@ -18,5 +18,9 @@ strip = 'llvm-strip'
 
 [built-in options]
 
-d_args = ['-gcc=clang', '-mtriple=x86_64-windows-msvc', '-mscrtlib=msvcrtd', ]
-c_link_args = ['-L=/NODEFAULTLIB:libcmt', '-L=/NODEFAULTLIB:libvcruntime', '-L=/DEFAULTLIB:legacy_stdio_definitions.lib', '-L=/LIBPATH:/home/voided/.xwin/crt/lib/x86_64', '-L=/LIBPATH:/home/voided/.xwin/sdk/lib/um/x86_64', '-L=/LIBPATH:/home/voided/.xwin/sdk/lib/ucrt/x86_64', '-L=/LIBPATH:/home/voided/Documents/D-projects/crossport/win-libs/Lib', ]
+d_link_args = [
+ '-L=/LIBPATH:/home/voided/.xwin/sdk/lib/um/x86_64', 
+ '-L=/LIBPATH:/home/voided/.xwin/sdk/lib/ucrt/x86_64', 
+ '-L=/LIBPATH:/home/voided/.xwin/crt/lib/x86_64', 
+ '-L=/LIBPATH:/home/voided/Documents/D-projects/crossport/ldc-lib', 
+ ]
