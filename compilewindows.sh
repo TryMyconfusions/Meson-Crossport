@@ -16,6 +16,6 @@ rm -rf build
 --ar llvm-ar \
 
 
-meson setup build --cross-file crossfile-windows.txt -Dbuildtype=release
+meson setup build --cross-file crossfile-windows.ini -Dbuildtype=release
 ./crossport --fixpath "build/build.ninja" 
 ninja -C build

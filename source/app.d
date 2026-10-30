@@ -20,7 +20,6 @@ import std.algorithm.searching;
 import std.json;
 import crosslib;
 
-;
 
 import conflib;
 
@@ -75,7 +74,7 @@ void main(string[] args)
 		"arch|a", "Cpu architecture", &conflib.cpufamily,
 		"platform|p", "Targeted OS to export to", &conflib.target_os,
 		"endian|e","the direction cpu reads big reads from left to right while little reads from right to left", &endian,
-
+ 
 		"d", "D compiler Path", &conflib.d_compiler,
 		"c", "C Compiler Path", &conflib.c_compiler,
 		"cpp","C++ Compiler", &conflib.cpp_compiler,
@@ -131,9 +130,13 @@ void main(string[] args)
 
 		string buildninja = std.file.readText(conflib.fixpath);
 		if (buildninja.canFind("-L=-L=")) {
-			string fixedcontents = crosslib.fix_build_ninja(buildninja);
-			std.file.write(conflib.fixpath,fixedcontents);
-			writeln("Sucessfully fixed build.ninja");
+			string fixedcontents = crosslib.fix_build_ninja(buildninja); //fix the build.ninja
+			std.file.write(conflib.fixpath,fixedcontents);  // write the fix into the file
+			writeln("Sucessfully fixed build.ninja"); // tell the user it is sucessful
+		}
+		else 
+		{
+			writeln("Could not find -L=-L= Pattern");
 		}
 		}
 		catch (Exception e) 
@@ -455,7 +458,7 @@ void main(string[] args)
 		add_section("[built-in options]", conflib.required_sections.builtin);
 
 		add_obj("d_args = " ~ crosslib.arrtostr(conflib.da));
-		printv("added d_args: "~  crosslib.arrtostr(conflib.da),  );
+		printv("added d_args: "~  crosslib.arrtostr(conflib.da));
 
 		passedflag();
 	} 
@@ -466,7 +469,7 @@ void main(string[] args)
 		add_section("[built-in options]", conflib.required_sections.builtin);
 
 		add_obj("c_args = " ~ crosslib.arrtostr(conflib.ca));
-		printv("added c_args: "~ crosslib.arrtostr(conflib.ca),  );
+		printv("added c_args: "~ crosslib.arrtostr(conflib.ca));
 
 		passedflag();
 	} 
@@ -477,7 +480,7 @@ void main(string[] args)
 		add_section("[built-in options]", conflib.required_sections.builtin);
 
 		add_obj("cpp_args = " ~ crosslib.arrtostr(cppa));
-		printv("added cpp_args: "~  crosslib.arrtostr(cppa),  );
+		printv("added cpp_args: "~  crosslib.arrtostr(cppa));
 
 		passedflag();
 	} 
@@ -489,7 +492,7 @@ void main(string[] args)
 		add_section("[built-in options]", conflib.required_sections.builtin);
 
 		add_obj("d_link_args = " ~ crosslib.arrtostr(dla));
-		printv("added d_link_args: "~ crosslib.arrtostr(dla),  );
+		printv("added d_link_args: "~ crosslib.arrtostr(dla));
 
 		passedflag();
 	} 
@@ -501,7 +504,7 @@ void main(string[] args)
 		add_section("[built-in options]", conflib.required_sections.builtin);
 
 		add_obj("c_link_args = " ~ crosslib.arrtostr(conflib.cla));
-		printv("added c_link_args: "~ crosslib.arrtostr(cla),  );
+		printv("added c_link_args: "~ crosslib.arrtostr(cla));
 
 		passedflag();
 	} 
@@ -513,7 +516,7 @@ void main(string[] args)
 		add_section("[built-in options]", conflib.required_sections.builtin);
 
 		add_obj("cpp_link_args = " ~ crosslib.arrtostr(cppla));
-		printv("added cpp_link_args: "~ crosslib.arrtostr(cppla),  );
+		printv("added cpp_link_args: "~ crosslib.arrtostr(cppla));
 
 		passedflag();
 	} 

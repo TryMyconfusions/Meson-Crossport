@@ -33,7 +33,7 @@ void generate_crossfile(string[] sts, string target_os)
 
 	}
 	if (target_os.length == 0) {writeln("No targetOS selected!"); return;}
-	std.file.write("crossfile-" ~ target_os ~ ".txt",final_str); // and then finally compile the finalstring 
+	std.file.write("crossfile-" ~ target_os ~ ".ini",final_str); // and then finally compile the finalstring 
 	writeln("sucessfully compiled Crossfile!");
 }
 

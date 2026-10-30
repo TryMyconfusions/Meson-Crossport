@@ -122,6 +122,13 @@ so it should be something like
 
 and crossport will be happy with it.
 
+
+Could not find -L=-L= Pattern error:
+
+This error is normal it just happens when it cannot find this pattern, the main reason why i made fixpath
+target this specific pattern is because i made when exporting to windows like i hate having to replace -L=-L= with -L= manually
+which for some reason Meson automatically adds, when i dont add a -L= it didnt add it so it caused errors.
+
 NOTE: Sometimes it may not appear so if its more than one letter like sysroot, make sure to add double dashes otherwise it wouldnt add it.
 
 The Supported architectures are:
