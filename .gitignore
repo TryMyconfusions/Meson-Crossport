@@ -9,7 +9,6 @@ crossport.dll
 crossport.a
 crossport.lib
 crossport-test-*
-*.exe
 *.pdb
 *.o
 *.obj
