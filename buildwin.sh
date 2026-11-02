@@ -25,7 +25,6 @@ echo "$(pwd)"
 echo "Building..."
 cd ..
 echo "$(pwd)"
-chmod +x win.sh
 rm ldc2-1.40.0-windows-x64.7z
 rm -rf ldc2-1.40.0-windows-x64
 
