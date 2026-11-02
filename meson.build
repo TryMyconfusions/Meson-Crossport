@@ -1,7 +1,7 @@
 project('crossport','d')
 inc_dir = include_directories('source')
 
-executable('crossportw',
+executable('crossport',
 ['source/app.d','source/crosslib.d','source/conflib.d'],
 
 d_import_dirs : [inc_dir],

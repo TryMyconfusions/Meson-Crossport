@@ -1,5 +1,9 @@
 this is a manual on how to use crossport!
 
+NOTE: In Windows or MacOS i recommend you to use GIT bash for build.sh
+
+
+
 SupportedOS and architectures are listed in here!
 
 Note: you should call --ca or --cla or your language thing and
@@ -27,7 +31,7 @@ it will print what the program is doing making debugging easier
 
 How to fix errors.
 
-Unrecognized command error:
+Unrecognized argument error:
 
 make sure your command is properly setup like
 "./crossport -v -a x86 -p windows -c gcc -s strip -e little"

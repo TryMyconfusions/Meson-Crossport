@@ -1,0 +1,18 @@
+Crossport
+
+a Simple, Lightweight Tool for Generating Crossfiles.
+
+
+Hey There, if you are ever gonna build windows in linux make sure to use xwin not mingw
+
+I had Problems with exporting MingW, so i used Xwin. Make sure to put your xwin folder in here
+
+/Home/YOURUSER/.xwin <-- This should be your xwin folder
+
+if you are gonna build crossport in X86, i wanna let you know its untested.
+
+And Make sure when you are Building Crossport, atleast have LDC Compiler installed in your system.
+
+BUT, if you are not willing to build crossport make sure to just use the precompiled releases.
+
+dependencies: LDC Compiler version 1.4.0 , clang ,clang++,
