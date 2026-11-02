@@ -19,3 +19,5 @@ dependencies: LDC Compiler version 1.4.0 , clang ,clang++,
 
 if crossport executable isnt there to build it
 you need to get a release of crossport put it in the build folder then build!
+
+FunFact: Crossport is made within a span of 2-3 weeks.
