@@ -18,6 +18,9 @@ BUT, if you are not willing to build crossport make sure to just use the precomp
 dependencies: LDC Compiler version 1.4.0 , clang ,clang++,
 
 if crossport executable isnt there to build it
-you need to get a release of crossport put it in the build folder then build!
+you need to get a release of crossport put it in the source folder then build!
+
+its because crossport depends on itself to build because each username is different.
+
 
 FunFact: Crossport is made within a span of 2-3 weeks.
