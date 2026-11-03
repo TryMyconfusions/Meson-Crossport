@@ -51,6 +51,8 @@ void main(string[] args)
 
 	try 
 	{
+	// this extracts the required arrays i need for this project.
+	// I added the arrays in the json because it looked cleaner.
 	JSONValue arrays = std.json.parseJSON(jsonstuff);
 
 	conflib.cpu_family = arrays["architectures"].array();
@@ -68,6 +70,8 @@ void main(string[] args)
 	try {
 	
 
+		// This is the function containing every single command in this software.
+
 	auto crossarg = getopt( // this is where the commandline parsing is made same approach as C getopt
 		args,
 		"v|verbose", "mainly for debugging purposes, tells the user what the program is doing", &conflib.verbose,
@@ -75,9 +79,13 @@ void main(string[] args)
 		"platform|p", "Targeted OS to export to", &conflib.target_os,
 		"endian|e","the direction cpu reads big reads from left to right while little reads from right to left", &endian,
  
-		"d", "D compiler Path", &conflib.d_compiler,
+		"d", "D Compiler Path", &conflib.d_compiler,
 		"c", "C Compiler Path", &conflib.c_compiler,
 		"cpp","C++ Compiler", &conflib.cpp_compiler,
+		"cs", "C# Compiler", &conflib.cs_compiler,
+		"rust", "Rust Compiler", &conflib.rust_compiler,
+		"fortran", "Fortran Compiler", &conflib.fortran_compiler,
+
 		"ar", "Ar Path", &conflib.ar,
 		"strip|s", "strip Path", &conflib.strip,
 		"exe", "exe wrapper Path", &conflib.exe_wrapper,
@@ -107,7 +115,6 @@ void main(string[] args)
 		"fixpath", "the path with the broken build.ninja", &conflib.fixpath,
 
 		"csl", "[advanced] c_std_lib", &cstdlib,
-		"dsl", "[advanced] d_std_lib", &dstdlib,
 		"cppsl", "[advanced] cpp_std_lib", &cppstdlib
 
 	);
@@ -122,7 +129,10 @@ void main(string[] args)
 		return;
 	}
 
-	if (conflib.fixpath != "") // so this basically fixes the build ninja through the fixpath by replacing -L=-L= to -L= 
+	// Fixpath fixes -L=-L= to -L= because meson wants to be helpful by adding a extra -L=, when i was testing Crossport meson was adding a Extra -L=
+	// and when i remove it, well meson just doesnt add it so thats why i made fixpath.
+	
+	if (conflib.fixpath != "")
 	{
 		try {
 
@@ -185,6 +195,8 @@ void main(string[] args)
 	}
 
 
+	// TargetOS just tells meson where to export the app.
+
 	if (find_e(target_os,supported_os) != "") // target OS
 	{ 
 		add_section("[host_machine]", conflib.required_sections.hostmachine);
@@ -238,6 +250,9 @@ void main(string[] args)
 	// adding the c compiler if the user told it to add
 
 	// Binaries
+	
+	//these are compilers that convert Your code to machine code so its way easier for the cpu to understand.
+	//because once your code is compiled it tends to run faster than running it on a interpreter.
 
 	if (conflib.c_compiler != "") 
 	{ 
@@ -272,7 +287,7 @@ void main(string[] args)
 		} 
 
 
-	if (cpp_compiler != "") //cpp binaries
+	if (conflib.cpp_compiler != "") //cpp binaries
 	{ 
 		add_section("[binaries]", conflib.required_sections.binaries);
 
@@ -287,6 +302,62 @@ void main(string[] args)
 			printv("added C++ Compiler: " ~ cpp_compiler); 
 			passedflag();
 	}
+
+	//C#, Rust, and fortran support is finally here
+
+	if (conflib.rust_compiler != "") 
+	{
+		add_section("[binaries]", conflib.required_sections.binaries);
+
+		if (!rust_compiler.canFind("[")) 
+		{ 
+			add_obj("rust = '" ~ rust_compiler ~ "'");
+		} 
+		else 
+		{
+			add_obj("rust = " ~ rust_compiler);
+		} 
+			printv("added rust Compiler: " ~ rust_compiler); 
+			passedflag();
+	}
+
+	if (conflib.cs_compiler != "") 
+	{
+		add_section("[binaries]", conflib.required_sections.binaries);
+
+		if (!cs_compiler.canFind("[")) 
+		{ 
+			add_obj("cs = '" ~ rust_compiler ~ "'");
+		} 
+		else 
+		{
+			add_obj("cs = " ~ rust_compiler);
+		} 
+			printv("added C# Compiler: " ~ cs_compiler); 
+			passedflag();
+	}
+
+	if (conflib.fortran_compiler != "") 
+	{
+		add_section("[binaries]", conflib.required_sections.binaries);
+
+		if (!fortran_compiler.canFind("[")) 
+		{ 
+			add_obj("fortran = '" ~ fortran_compiler ~ "'");
+		} 
+		else 
+		{
+			add_obj("fortran = " ~ fortran_compiler);
+		} 
+			printv("added fortran Compiler: " ~ fortran_compiler); 
+			passedflag();
+	}
+
+
+
+	// these are just binaries for meson, meson requires these (Except exe wrapper).
+	// The exe wrapper is just software that runs the software from windows
+	// if you are on linux the exe wrapper can get handy sometimes.
 
 
 	if (conflib.ar != "") //ar binaries
@@ -328,7 +399,11 @@ void main(string[] args)
 		 passedflag(); 
 	}
 
+	// Properties
 
+
+	// These are rare ones they tell how many bytes a type should take.
+	// These are really used for microcontrollers where storage is tight.
 
 	if (conflib.soi != 0) 
 	{ 
@@ -340,7 +415,6 @@ void main(string[] args)
 		passedflag(); 
 	}
 
-	// Properties
 
 	if (conflib.soc != 0) 
 	{ 
@@ -380,6 +454,9 @@ void main(string[] args)
 	}
 
 
+	// Needs exe wrapper tells meson if the app requires a wrapper like wine.
+	// Its most likely for testing purposes.
+
 	if (conflib.needs_exe_wrap) 
 	{
 	add_section("[properties]", conflib.required_sections.properties);
@@ -415,24 +492,16 @@ void main(string[] args)
 	}
 	
 	// these are custom stdlibs that the user can define.
+	// Custom STD Libs are rarely ever used though so i added this so if
+	// The user has a custom stdlib they can just add it here.
 
-	if (conflib.dstdlib.length > 0) 
+	if (conflib.cstdlib.length > 0) 
 	{
 		add_section("[properties]", conflib.required_sections.properties);
 
-		add_obj("d_stdlib = " ~ crosslib.arrtostr(conflib.dstdlib));
+		add_obj("c_stdlib = " ~ crosslib.arrtostr(conflib.cstdlib));
 
-		crosslib.printv("added d_std_lib: " ~ crosslib.arrtostr(conflib.dstdlib));
-	}
-
-
-	if (conflib.dstdlib.length > 0) 
-	{
-		add_section("[properties]", conflib.required_sections.properties);
-
-		add_obj("cpp_stdlib = " ~ crosslib.arrtostr(conflib.dstdlib));
-
-		crosslib.printv("added cpp_std_lib: " ~ crosslib.arrtostr(conflib.dstdlib));
+		crosslib.printv("added d_std_lib: " ~ crosslib.arrtostr(conflib.cstdlib));
 	}
 
 
@@ -450,6 +519,8 @@ void main(string[] args)
 
 
 	// Language arguments
+	//These add a section just like linker arguments it converts a array into single quoted ones because
+	//Apparently double quoted strings in a crossfile makes meson error out
 
 
 
@@ -485,7 +556,10 @@ void main(string[] args)
 		passedflag();
 	} 
 
-	// Linker arguments
+	// Linker arguments for compilers
+
+	//This section checks if there is a builtin-in options Section, and if there is it adds a array because
+	// Linker arguments are arrays apparently.
 
 	if (conflib.dla.length > 0 ) 
 	{
@@ -521,6 +595,35 @@ void main(string[] args)
 		passedflag();
 	} 
 
+	if (conflib.csla.length > 0 ) 
+	{
+		add_section("[built-in options]", conflib.required_sections.builtin);
+
+		add_obj("cs_link_args = " ~ crosslib.arrtostr(csla));
+		printv("added cs_link_args: "~ crosslib.arrtostr(csla));
+
+		passedflag();
+	} 
+
+	if (conflib.rustla.length > 0 ) 
+	{
+		add_section("[built-in options]", conflib.required_sections.builtin);
+
+		add_obj("rust_link_args = " ~ crosslib.arrtostr(rustla));
+		printv("added rust_link_args: "~ crosslib.arrtostr(rustla));
+
+		passedflag();
+	} 
+
+	if (conflib.fortranla.length > 0 ) 
+	{
+		add_section("[built-in options]", conflib.required_sections.builtin);
+
+		add_obj("fortran_link_args = " ~ crosslib.arrtostr(fortranla));
+		printv("added fortran_link_args: "~ crosslib.arrtostr(fortranla));
+
+		passedflag();
+	} 
 
 
 
