@@ -7,7 +7,7 @@ Hey There, if you are ever gonna build windows in linux make sure to use xwin no
 
 I had Problems with exporting MingW, so i used Xwin. Make sure to put your xwin folder in here
 
-/Home/YOURUSER/.xwin <-- This should be your xwin folder
+/home/YOURUSER/.xwin <-- This should be your xwin folder
 
 if you are gonna build crossport in X86, i wanna let you know its untested.
 
